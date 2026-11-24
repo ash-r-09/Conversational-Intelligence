@@ -1,0 +1,101 @@
+# BANT rules. Edit patterns, weights and thresholds here; no code change needed.
+# Patterns are case-insensitive regexes run on CUSTOMER turns only.
+# \x27 means an apostrophe (keeps YAML quoting simple).
+#
+# Each dimension is scored 0-3 from the strongest matching level, then scaled to 25 points.
+# "cue" = what a seller says that would LEAD the customer to talk about it. If the turn
+# before the customer's answer matches the cue, the evidence is "led" (weighted lower).
+
+weights:
+  unprompted: 1.0
+  led: 0.7
+
+grades:
+  qualified: 70
+  nurture: 40
+
+dimensions:
+  budget:
+    cue: '\b(budget|spend|invest|price|pricing|cost|afford|fund)\w*'
+    question: "What budget range have you set aside for solving this, and who has to approve it?"
+    levels:
+      3:
+        - '\b(budget (is )?(approved|allocated|signed off|secured|set aside)|approved (a |the )?budget|we have (the )?budget|funds? (are |is )?(approved|allocated))'
+      2:
+        - '(?=.*\b(budget|spend|pay|afford|invest|allocat)\w*)(?=.*([$₹€£]\s?\d|\d\s?(k|lakh|lakhs|crore|million)\b))'
+      1:
+        - '\b(budget|spend|funding|afford|invest)\b'
+    disqualifiers:
+      - '\bno budget\b'
+      - 'don\x27?t have (any )?budget'
+      - 'budget (is )?(frozen|cut|tight)'
+      - 'can\x27?t afford'
+      - 'out of (our )?budget'
+
+  authority:
+    cue: '\b(decision|decide|approve|sign|stakeholder|involved|who else|procurement)\w*'
+    question: "Besides you, who else needs to sign off, and what does your approval process look like?"
+    levels:
+      3:
+        - 'i(\x27m| am) the (final )?decision[- ]?maker'
+        - 'i (make|own|sign|approve)\b.*\b(decision|budget|contract|purchase|deal)'
+        - 'final (say|call|decision) (is |rests )?(with )?me'
+        - '\bmy call\b'
+        - '\bi decide\b'
+        - 'i(\x27m| am) (the |our )?(ceo|cfo|cto|coo|founder|co-founder|owner|president)\b'
+      2:
+        - 'i(\x27m| am) (the |our )?(vp|vice president|director|head of)\b'
+        - 'i(\x27ll| will) (bring|take) (it|this) to (our |the )?(ceo|cfo|board|leadership|committee|team)'
+        - '\bi(\x27ll| will) (champion|recommend)\b'
+        - '(me and|with) (my|our) (cfo|ceo|boss|cto)'
+      1:
+        - '(need to|have to|got to|must) (check|run (it|this) by|get (approval|sign[- ]?off)|loop in)'
+        - '\b(my boss|committee|procurement|legal|the board|approval process|sign[- ]?off)\b'
+    disqualifiers:
+      - 'not (involved|the decision|my (area|call|decision))'
+      - 'not up to me'
+      - 'just (researching|gathering info)'
+
+  need:
+    cue: '\b(problem|challenge|pain|struggle|issue|goal|trying to|why|what.s (not )?working)\w*'
+    question: "What is this costing you today, in time, money or missed targets?"
+    levels:
+      3:
+        - '(?=.*\b(problem|struggl\w*|pain|losing|lose|wast\w*|manual\w*|slow|churn\w*|missing|broken|bottleneck|too long)\b)(?=.*\d+\s?(%|hours?|hrs|days?|weeks?|people|reps|leads|deals|customers|k\b|lakh|crore|million))'
+      2:
+        - '\b(problem|struggl\w*|pain|losing|wast\w*|manual(ly)?|bottleneck|broken|frustrat\w*)\b'
+        - 'takes? (us )?(too long|forever|hours)'
+        - 'can\x27?t (\w+ ){0,3}(see|track|scale|keep up|forecast)'
+      1:
+        - '\b(looking (for|to)|want(ed)? to|need(ed)? (to|a)|interested in|improve|better way)\b'
+    disqualifiers:
+      - 'no (real )?(need|pain|problem)'
+      - 'happy with (what|our)'
+      - 'works? fine'
+      - 'we(\x27re| are) (good|fine|all set)'
+      - 'not (a )?priority'
+
+  timeline:
+    cue: '\b(when|timeline|deadline|timeframe|by when|launch|go[- ]live|time frame)\w*'
+    question: "Is there a date or event this has to be live by, and what happens if it slips?"
+    levels:
+      3:
+        - '(?=.*\b(deadline|by|before|go[- ]live|launch|renewal|expires?|due)\b)(?=.*(\b(jan(uary)?|feb(ruary)?|mar(ch)?|apr(il)?|may \d+|june?|july?|aug(ust)?|sep(t(ember)?)?|oct(ober)?|nov(ember)?|dec(ember)?)\b|\bq[1-4]\b|end of (the )?(month|quarter|year)|(this|next) (month|quarter|week)|within \d+ (days?|weeks?|months?)|in \d+ (days?|weeks?|months?)))'
+      2:
+        - '\bq[1-4]\b'
+        - 'end of (the )?(month|quarter|year)'
+        - '(this|next) (month|quarter|year)'
+        - '(within|in) \d+ (days?|weeks?|months?)'
+      1:
+        - '\b(soon|eventually|at some point|down the road|sometime|asap|urgent)\b'
+    disqualifiers:
+      - 'no rush'
+      - 'not in a hurry'
+      - 'no (set )?(timeline|deadline)'
+      - '\bsomeday\b'
+      - 'just exploring'
+
+intelligence:
+  competitors: [salesforce, hubspot, gong, outreach, apollo, zoominfo, clari, chorus, pipedrive, zoho]
+  next_steps: '(let\x27?s|can we|i\x27ll|we\x27ll|shall we) (schedule|set up|book|send|share|follow up|circle back|loop)|next (step|call|meeting)|follow[- ]up (call|meeting)|demo on'
+  objections: '\b(too expensive|expensive|pricey|worried|concern\w*|not sure|already (use|have|using)|don\x27?t see (the )?value|can\x27?t justify|security review)\b'

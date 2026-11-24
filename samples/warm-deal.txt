@@ -1,0 +1,8 @@
+Sam (Seller): Tell me about how your team handles call review today.
+Dev (Customer): It's pretty manual. We'd like to improve how we coach reps, it takes us forever to listen to calls.
+Sam (Seller): Understood. Do you have a budget in mind?
+Dev (Customer): We do have some budget but I'd need to run it by my boss first.
+Sam (Seller): When would you want to get started?
+Dev (Customer): Probably sometime next quarter, nothing fixed yet.
+Sam (Seller): Who makes the final call?
+Dev (Customer): I'll recommend a vendor to our CFO. We already use HubSpot so integration matters.

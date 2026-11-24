@@ -1,0 +1,10 @@
+Alex (Seller): Thanks for making time, Priya. What prompted you to look at conversation intelligence?
+Priya (Customer): Honestly we're losing deals and we can't see why. Our reps spend 6 hours a week on manual call notes, and 30% of forecasted deals slip.
+Alex (Seller): That's a lot of lost time. Who else is involved in a decision like this?
+Priya (Customer): I'm the VP of Sales and I make the final decision on tooling. I sign the contract.
+Alex (Seller): Great. Is there budget set aside for this?
+Priya (Customer): Yes, budget is approved. We have $60k allocated for this fiscal year.
+Alex (Seller): And timing?
+Priya (Customer): We need it live before the end of Q1, our renewal with Gong expires on March 31st.
+Alex (Seller): Let's schedule a demo with your team next week and I'll send over the security docs.
+Priya (Customer): Sounds good. My only concern is the security review, but our CTO is already looped in.
