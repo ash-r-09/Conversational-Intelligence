@@ -5,7 +5,8 @@ import json
 import sys
 from pathlib import Path
 
-from .scoring import DIMS, load_config, score_text
+from .lexicon import check, counts, load_lexicon, search
+from .scoring import DEFAULT_LEXICON, DIMS, load_config, score_text
 
 DEFAULT_CONFIG = Path(__file__).resolve().parent.parent / "config" / "bant.yaml"
 
@@ -15,7 +16,8 @@ def render_markdown(name: str, r: dict) -> str:
     L += ["| BANT | Points | Level | Evidence |", "|---|---|---|---|"]
     for d in DIMS:
         v = r["dimensions"][d]
-        ev = f"\"{v['quote']}\" ({v['prompted']}, turn {v['turn']})" if v["quote"] else "none found"
+        ev = (f"\"{v['quote']}\" ({v['prompted']}, turn {v['turn']}, matched \"{v['matched']}\")"
+              if v["quote"] else "none found")
         if v["disqualifiers"]:
             ev += f" ⚠ disqualifier: \"{v['disqualifiers'][0]['quote']}\""
         L.append(f"| {d.title()} | {v['points']}/25 | {v['level']}/3 | {ev} |")
@@ -24,9 +26,14 @@ def render_markdown(name: str, r: dict) -> str:
     i = r["intelligence"]
     L += ["", "**Conversation intelligence**",
           f"- Seller talk share: {i['talk_ratio_seller_pct']}% · seller questions: {i['seller_questions']} · customer questions: {i['customer_questions']}",
+          f"- Momentum: **{i['momentum']}** · buying signals: {len(i['buying_signals'])} · stall signals: {len(i['stall_signals'])}",
+          f"- Stakeholders mentioned: {', '.join(i['stakeholders_mentioned']) or 'none'}",
           f"- Competitors: {', '.join(i['competitors_mentioned']) or 'none'}",
-          f"- Next steps: {'; '.join(i['next_steps']) or 'none agreed'}",
-          f"- Objections: {'; '.join(i['objections']) or 'none'}"]
+          f"- Next steps: {'; '.join(i['next_steps']) or 'none agreed'}"]
+    if i["objections"]:
+        L.append("- Objections: " + "; ".join(f"{cat}: \"{qs[0]}\"" for cat, qs in i["objections"].items()))
+    else:
+        L.append("- Objections: none")
     for w in r["warnings"]:
         L.append(f"- ⚠ {w}")
     return "\n".join(L)
@@ -38,13 +45,30 @@ def main(argv=None) -> int:
     s = sub.add_parser("score")
     s.add_argument("path", help="transcript .txt/.md file or a folder of them")
     s.add_argument("--config", default=str(DEFAULT_CONFIG))
+    s.add_argument("--lexicon", default=None, help="word directory (default: config/lexicon.yaml)")
     s.add_argument("--seller", default="", help="comma-separated seller names")
     s.add_argument("--customer", default="", help="comma-separated customer names")
     s.add_argument("--out", help="write report.csv and per-call .json/.md here")
     s.add_argument("--json", action="store_true", help="print JSON instead of markdown")
+    lx = sub.add_parser("lexicon", help="inspect/validate the word directory")
+    lx.add_argument("--lexicon", default=str(DEFAULT_LEXICON))
+    lx.add_argument("--search", help="find where a word or phrase appears in the directory")
     a = p.parse_args(argv)
 
-    cfg = load_config(a.config)
+    if a.cmd == "lexicon":
+        lex = load_lexicon(a.lexicon)
+        if a.search:
+            hits = search(lex, a.search)
+            print("\n".join(hits) or f"'{a.search}' not found")
+            return 0
+        print(json.dumps(counts(lex), indent=2))
+        problems = check(lex)
+        print("\nProblems:" if problems else "\nNo problems found.")
+        for pr in problems:
+            print(f"- {pr}")
+        return 1 if any("CONFLICT" in x or "cannot compile" in x for x in problems) else 0
+
+    cfg = load_config(a.config, a.lexicon)
     path = Path(a.path)
     files = sorted(f for f in path.iterdir() if f.suffix in (".txt", ".md")) if path.is_dir() else [path]
     if not files:

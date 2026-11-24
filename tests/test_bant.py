@@ -64,3 +64,39 @@ def test_intelligence_extracts_competitor_next_step_objection():
 def test_no_customer_turns_scores_zero():
     r = score_text("Alex (Seller): hello?", CFG)
     assert r["total"] == 0 and r["warnings"]
+
+
+def test_negation_guard_blocks_not_looking_to_improve():
+    r = score_text("Rep (Seller): Hi.\nBuyer (Customer): We are not looking to improve anything.", CFG)
+    assert r["dimensions"]["need"]["points"] == 0
+
+
+def test_lexicon_catches_indirect_phrasing_the_regex_missed():
+    r = score_text("Rep (Seller): Tell me more.\nBuyer (Customer): The budget has been sanctioned.", CFG)
+    assert r["dimensions"]["budget"]["level"] == 3
+
+
+def test_wildcard_and_apostrophe_tolerance():
+    r = score_text("Rep (Seller): Hi.\nBuyer (Customer): We dont have any budget right now.", CFG)
+    assert r["dimensions"]["budget"]["disqualifiers"]
+
+
+def test_indian_english_sample_scores_high_with_intelligence():
+    r = run("indian-english")
+    assert r["grade"] == "Qualified"
+    d = r["dimensions"]
+    assert d["budget"]["level"] >= 2 and d["timeline"]["level"] == 3 and d["authority"]["level"] >= 2
+    i = r["intelligence"]
+    assert i["momentum"] == "positive"
+    assert "integration" in i["objections"]
+    assert {"cfo", "head of"} <= set(i["stakeholders_mentioned"])
+
+
+def test_stall_signals_make_momentum_stalling():
+    r = score_text("Rep (Seller): Next steps?\nBuyer (Customer): Just send me an email, I'll get back to you.", CFG)
+    assert r["intelligence"]["momentum"] == "stalling"
+
+
+def test_lexicon_has_no_conflicts_or_bad_phrases():
+    from bant_agent.lexicon import check, load_lexicon
+    assert check(load_lexicon(ROOT / "config" / "lexicon.yaml")) == []

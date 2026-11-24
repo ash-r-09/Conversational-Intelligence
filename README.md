@@ -32,7 +32,8 @@ Sample output (synthetic transcripts):
 
 | Call | Score | Grade | B | A | N | T | Gaps |
 |---|---|---|---|---|---|---|---|
-| hot-deal | 85.0 | Qualified | 17.5 | 17.5 | 25.0 | 25.0 | - |
+| indian-english | 79.2 | Qualified | 25 | 11.7 | 25 | 17.5 | - |
+| hot-deal | 77.5 | Qualified | 17.5 | 17.5 | 25 | 17.5 | - |
 | warm-deal | 50.9 | Nurture | 5.8 | 16.7 | 16.7 | 11.7 | budget |
 | cold-deal | 0.0 | Unqualified | 0 | 0 | 0 | 0 | all four |
 
@@ -58,7 +59,27 @@ Each dimension gets a level of 0-3 from the strongest matching pattern, then `po
 | **Need** | pain with a number ("6 hours a week", "30%") | specific pain | wants to improve |
 | **Timeline** | deadline with a date or quarter | a timeframe ("next quarter") | "soon" / "ASAP" |
 
-All patterns, weights and thresholds live in [`config/bant.yaml`](config/bant.yaml). Edit the file to match your own qualification criteria.
+## The word directory
+
+[`config/lexicon.yaml`](config/lexicon.yaml) is the file to edit. It holds about 700 plain phrases, no regex needed:
+
+| Section | What it holds |
+|---|---|
+| `dimensions.<budget/authority/need/timeline>` | phrases per strength (`level_3`, `level_2`, `level_1`), `disqualifiers`, and seller `cue` phrases |
+| `competitors` | about 43 tools in four groups (conversation intelligence, CRM, sales data, coaching) |
+| `buying_signals` | "send me a proposal", "can we try it", "who else uses this"... |
+| `stall_signals` | "just send me an email", "I'll get back to you", "comparing vendors"... |
+| `objections` | seven groups: price, timing, trust and security, status quo, integration, value, adoption |
+| `stakeholder_titles` | roles the customer mentions (a sign the deal is multi-threaded) |
+
+Matching rules: whole words only, `budget*` means any ending, apostrophes are optional, and a phrase is ignored when negated within three words ("*not* looking to improve"). A few common Hinglish phrases are included.
+
+```bash
+.venv/bin/python -m bant_agent lexicon                     # counts per section and conflict check
+.venv/bin/python -m bant_agent lexicon --search budget     # where does a word appear?
+```
+
+The checker fails on a phrase that sits at two strength levels of one dimension, and on phrases that won't compile. Two things stay in [`config/bant.yaml`](config/bant.yaml): the few regex rules that need patterns (money amounts, deadline plus date) and the weights and grade thresholds.
 
 ## Use it inside Claude Code
 
@@ -71,7 +92,7 @@ To use them from any folder, copy `.claude/skills/score-bant` to `~/.claude/skil
 
 ## Limits
 
-- **Rules, not understanding.** Regex patterns miss paraphrase, sarcasm and other languages, and can credit a past deal or another company's budget. English only.
+- **Rules, not understanding.** Phrase lists miss paraphrase, sarcasm and other languages, and can credit a past deal or another company's budget. English only.
 - **Not validated.** The samples are synthetic and the weights are hand-set. Nobody has checked the scores against human-labelled real calls, so don't read the grade as a forecast.
 - **Plain text only.** Audio, Gong/Chorus JSON and PDFs are not parsed; convert them to the format above first.
 - **Natural next step:** use an LLM only on the evidence quotes to review borderline levels, keeping the rule-based score as the audit trail.

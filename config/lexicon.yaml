@@ -1,0 +1,847 @@
+# BANT-AGENT word directory. Plain phrases, no regex needed.
+#
+# How phrases are matched (case-insensitive):
+#   - whole words only; "budget" does not match "budgeting" unless you write budget*
+#   - a trailing * means "any word ending":  budget*  ->  budget, budgets, budgeting
+#   - apostrophes are optional:  "don't"  also matches  "dont"  and  "don’t"
+#   - spaces match any run of whitespace
+# Positive phrases are ignored when negated within 3 words ("not looking to improve").
+# Disqualifier phrases are NOT negation-checked (they already say "no/not").
+#
+# Add your own words anywhere. Run:  python -m bant_agent lexicon   to check for conflicts.
+# Only CUSTOMER turns are scored. "cue" phrases are what a SELLER says that leads the customer.
+
+dimensions:
+
+  budget:
+    cue:
+      - budget*
+      - how much
+      - spend*
+      - price
+      - pricing
+      - cost*
+      - afford*
+      - fund*
+      - invest*
+      - financial*
+      - what range
+      - ballpark
+    level_3:   # money is approved or allocated
+      - budget approved
+      - approved budget
+      - budget is approved
+      - budget is signed off
+      - budget secured
+      - budget allocated
+      - allocated budget
+      - budget is allocated
+      - budget set aside
+      - we have the budget
+      - we have budget
+      - we have budget approved
+      - funds approved
+      - funds are approved
+      - funds allocated
+      - funding approved
+      - funding secured
+      - money is approved
+      - spend is approved
+      - spend approved
+      - budget sanctioned
+      - sanctioned budget
+      - budget has been sanctioned
+      - budget is sanctioned
+      - it's in the budget
+      - it is in the budget
+      - already budgeted
+      - budgeted for this
+      - budgeted for it
+      - line item for
+      - finance has approved
+      - finance approved
+      - cfo approved the budget
+      - po is ready
+      - purchase order is ready
+      - we can pay for this
+      - budget approve ho gaya
+    level_2:   # money is discussed concretely
+      - we have a budget of
+      - our budget is around
+      - our budget is about
+      - budget range
+      - budget of around
+      - budget of about
+      - we can spend up to
+      - we are looking to spend
+      - we're looking to spend
+      - willing to pay
+      - willing to spend
+      - we can invest
+      - earmarked
+      - ring-fenced
+      - ringfenced
+      - allocated for this year
+      - planned spend
+      - annual spend on
+      - we currently pay
+      - we currently spend
+      - we pay about
+      - we're paying
+      - we are paying
+      - our current contract costs
+      - costs us per month
+      - costs us per year
+      - per seat budget
+      - budget for this year
+      - budget this quarter
+      - budget next quarter
+    level_1:   # money mentioned loosely or a future budget opening
+      - might have budget
+      - could find budget
+      - can find the money
+      - may be able to find budget
+      - budget cycle
+      - next budget cycle
+      - budget planning
+      - budget review
+      - budget season
+      - fiscal year
+      - annual planning
+      - budget conversation
+      - budget discussion
+      - budget exists
+      - some budget
+      - budget
+    disqualifiers:
+      - no budget
+      - no money
+      - zero budget
+      - don't have budget
+      - don't have any budget
+      - do not have budget
+      - we have no budget
+      - budget is frozen
+      - budget freeze
+      - freeze on spending
+      - spending freeze
+      - budget is cut
+      - budget cuts
+      - budget is tight
+      - tight on budget
+      - can't afford
+      - cannot afford
+      - too expensive for us
+      - out of our budget
+      - over our budget
+      - beyond our budget
+      - nothing allocated
+      - nothing budgeted
+      - not budgeted
+      - unbudgeted
+      - no funding
+      - funding fell through
+      - budget nahi hai
+      - paisa nahi hai
+
+  authority:
+    cue:
+      - decision*
+      - decide*
+      - approve*
+      - approval*
+      - sign off
+      - sign-off
+      - who else
+      - stakeholder*
+      - involved
+      - procurement
+      - who signs
+      - final say
+      - buying process
+      - process look like
+      - who owns
+    level_3:   # the speaker decides
+      - i make the final decision
+      - i make the decision
+      - i'm the decision maker
+      - i am the decision maker
+      - i am the final decision maker
+      - i'm the final decision maker
+      - the final say is mine
+      - final say rests with me
+      - final say is with me
+      - final call is mine
+      - it's my call
+      - it is my call
+      - my call
+      - my decision
+      - i decide
+      - i sign off
+      - i sign the contract
+      - i sign
+      - i approve
+      - i own the budget
+      - i own this decision
+      - i have signing authority
+      - i have sign off authority
+      - the buck stops with me
+      - i run the company
+      - i'm the founder
+      - i am the founder
+      - i'm the co-founder
+      - i'm the ceo
+      - i am the ceo
+      - i'm the cfo
+      - i am the cfo
+      - i'm the cto
+      - i am the cto
+      - i'm the coo
+      - i'm the owner
+      - i am the owner
+      - i'm the president
+      - i'm the managing director
+      - i am the managing director
+      - final decision mera hai
+      - decision mera hai
+    level_2:   # senior or a real champion
+      - i'm the vp
+      - i am the vp
+      - i'm a vp
+      - i'm vp of
+      - i'm the vice president
+      - i'm the director
+      - i'm director of
+      - i am the director
+      - i'm head of
+      - i am head of
+      - i lead the team
+      - i run the team
+      - i run sales
+      - i manage the team
+      - i own the evaluation
+      - i'm running the evaluation
+      - i'm leading this evaluation
+      - i'll champion
+      - i will champion
+      - i'll recommend
+      - i will recommend
+      - they trust my recommendation
+      - my recommendation carries weight
+      - i'll take it to the cfo
+      - i'll bring it to the ceo
+      - i'll bring this to leadership
+      - i'll present to
+      - i'll present this to
+      - ceo is on board
+      - cfo is on board
+      - our ceo is already involved
+      - cto is looped in
+      - already looped in
+      - my boss is on board
+      - leadership is aligned
+      - exec sponsor
+      - executive sponsor
+      - economic buyer
+      - we've identified the decision maker
+      - the decision maker is
+    level_1:   # someone else must approve
+      - need to check with
+      - need approval
+      - need sign-off
+      - need sign off
+      - have to run it by
+      - run it by my boss
+      - check with my boss
+      - check with my manager
+      - talk to my boss
+      - go to my boss
+      - get approval from
+      - approval process
+      - goes through procurement
+      - procurement will
+      - legal will need
+      - legal review
+      - security review
+      - it goes to committee
+      - buying committee
+      - steering committee
+      - the board needs
+      - management approval
+      - management se poochna padega
+      - need to loop in
+      - need to bring in
+      - i'd need to ask
+      - depends on my manager
+      - multiple stakeholders
+      - stakeholders
+    disqualifiers:
+      - not my decision
+      - not my call
+      - not up to me
+      - not the decision maker
+      - i'm not the decision maker
+      - i don't make the decision
+      - i don't make decisions
+      - i have no say
+      - no authority
+      - just gathering information
+      - just gathering info
+      - just researching
+      - researching for someone
+      - someone else decides
+      - someone else handles this
+      - wrong person
+      - wrong person to talk to
+      - you'd need to talk to someone else
+
+  need:
+    cue:
+      - problem*
+      - challenge*
+      - pain*
+      - struggl*
+      - issue*
+      - goal*
+      - trying to
+      - why
+      - not working
+      - what's working
+      - biggest
+      - priorit*
+      - impact
+      - cost of
+    level_3:   # severe, high-priority pain
+      - losing deals
+      - losing customers
+      - losing revenue
+      - missing our number
+      - missed our target
+      - missing quota
+      - behind on quota
+      - churn is up
+      - pipeline is dry
+      - can't hit our number
+      - the board is asking
+      - top priority
+      - number one priority
+      - business critical
+      - mission critical
+      - keeping me up at night
+      - biggest problem
+      - biggest challenge
+      - burning platform
+      - costing us real money
+      - revenue at risk
+      - this is urgent for us
+    level_2:   # specific, named pain
+      - it's a problem
+      - we have a problem
+      - our problem is
+      - the problem is
+      - the challenge is
+      - our challenge
+      - we struggle
+      - we're struggling
+      - we are struggling
+      - struggling with
+      - we can't see
+      - no visibility
+      - blind spot
+      - lack of visibility
+      - can't track
+      - can't measure
+      - can't forecast
+      - forecasts are off
+      - forecast accuracy
+      - manual process
+      - manually
+      - spreadsheets
+      - copy and paste
+      - too much time on
+      - spend too much time
+      - takes too long
+      - takes forever
+      - taking hours
+      - time consuming
+      - time-consuming
+      - inconsistent
+      - falling through the cracks
+      - dropped leads
+      - leads slip
+      - reps don't follow
+      - no coaching
+      - low adoption
+      - rep ramp
+      - ramp time
+      - long ramp
+      - pain point
+      - pain points
+      - frustrating
+      - frustrated
+      - tired of
+      - fed up
+      - not working
+      - doesn't work
+      - broken process
+      - outgrown
+      - outgrew
+      - our current tool
+      - our current solution doesn't
+      - switching from
+      - replace our
+      - want to replace
+      - looking to replace
+      - contract is up
+      - hard to scale
+      - can't scale
+      - doesn't scale
+      - bottleneck
+      - wasting time
+      - waste of time
+      - duplicate work
+      - data is messy
+      - dirty data
+      - bad data
+      - data quality
+      - no single source of truth
+      - problem aa rahi hai
+    level_1:   # interest without stated pain
+      - looking for
+      - looking to
+      - we want to
+      - we'd like to
+      - we need to
+      - we need a
+      - we need something
+      - interested in
+      - improve
+      - better way
+      - better visibility
+      - streamline
+      - automate
+      - automation
+      - optimize
+      - optimise
+      - evaluating
+      - curious about
+      - heard about
+      - someone recommended
+      - saw your
+      - wondering if
+    disqualifiers:
+      - no need
+      - no real need
+      - no pain
+      - no problem
+      - no issue
+      - not a problem
+      - nothing wrong
+      - works fine
+      - working fine
+      - works well for us
+      - working well
+      - happy with
+      - we're happy
+      - satisfied with
+      - we're good
+      - we are good
+      - we're all set
+      - already solved
+      - not a priority
+      - low priority
+      - not a top priority
+      - back burner
+      - on the back burner
+      - parked
+      - put on hold
+      - on hold
+      - shelved
+      - nice to have
+      - nice-to-have
+      - not interested
+      - no interest
+      - not looking
+      - not looking right now
+      - sab theek hai
+      - zaroorat nahi hai
+
+  timeline:
+    cue:
+      - when
+      - timeline*
+      - deadline*
+      - timeframe*
+      - time frame
+      - by when
+      - go live
+      - go-live
+      - launch*
+      - how soon
+      - timing
+      - event
+    level_3:   # a hard date or forcing event
+      - go-live date
+      - go live date
+      - hard deadline
+      - drop-dead date
+      - we must be live
+      - need to be live by
+      - needs to be live by
+      - have to launch by
+      - launching on
+      - kickoff is
+      - kick off is
+      - start date is
+      - contract expires
+      - contract ends
+      - renewal date
+      - renewal is on
+      - renewal is coming up
+      - our renewal
+      - before our renewal
+      - board meeting
+      - board deck
+      - fiscal year end
+      - year end
+      - end of fiscal
+      - budget expires
+      - use it or lose it
+      - funds expire
+      - product launch
+      - planned launch
+      - deadline is
+      - the deadline
+      - due date
+      - due by
+      - target date
+      - target go live
+      - sign by
+      - signed by
+      - close by
+      - decision by
+      - decision date
+      - we decide by
+      - deciding by
+    level_2:   # a stated timeframe
+      - this quarter
+      - next quarter
+      - this month
+      - next month
+      - this year
+      - end of the month
+      - end of quarter
+      - end of the quarter
+      - end of year
+      - end of the year
+      - first quarter
+      - second quarter
+      - third quarter
+      - fourth quarter
+      - in a few weeks
+      - in the next few weeks
+      - in a couple of weeks
+      - in a couple of months
+      - within the month
+      - within a month
+      - in the next month
+      - over the next quarter
+      - next couple of months
+      - next few months
+      - by summer
+      - by fall
+      - by autumn
+      - by winter
+      - by spring
+      - after the holidays
+      - after summer
+      - in the new year
+      - early next year
+      - later this quarter
+      - planning to decide
+      - planning to start
+      - planning to roll out
+      - rolling out
+      - roll out in
+      - want to start
+      - want to get started
+      - ready to start
+      - ready to move
+      - ready to move forward
+      - move quickly
+      - move fast
+      - as soon as possible
+      - immediately
+      - right away
+      - this week
+      - next week
+    level_1:   # urgency without a date
+      - soon
+      - asap
+      - urgent
+      - urgently
+      - eventually
+      - at some point
+      - down the road
+      - sometime
+      - later this year
+      - at some stage
+      - in the future
+      - when the time is right
+      - in due course
+      - shortly
+      - in the near future
+      - jaldi chahiye
+      - jaldi
+    disqualifiers:
+      - no rush
+      - no hurry
+      - not in a hurry
+      - not in a rush
+      - no deadline
+      - no timeline
+      - no set timeline
+      - no fixed timeline
+      - no urgency
+      - not urgent
+      - not urgent for us
+      - someday
+      - some day
+      - just exploring
+      - just looking
+      - just browsing
+      - early stages
+      - very early
+      - very early stage
+      - not now
+      - not right now
+      - maybe next year
+      - not until next year
+      - nothing this year
+      - revisit next year
+      - revisit later
+      - circle back next year
+      - check back in
+      - check back next
+      - too early
+      - not ready
+      - not ready yet
+      - we're not ready
+      - koi jaldi nahi hai
+      - abhi nahi
+      - filhaal nahi
+
+# Conversation-intelligence word lists -------------------------------------------------
+
+competitors:
+  conversation_intelligence: [gong, chorus, clari, avoma, fireflies, fathom, otter, salesloft, revenue.io, jiminny, wingman, observe.ai, balto, cogito]
+  crm: [salesforce, hubspot, pipedrive, zoho, dynamics, freshsales, copper, close.com]
+  sales_data_and_engagement: [apollo, zoominfo, lusha, seamless.ai, clay, instantly, smartlead, lemlist, hunter.io, cognism, 6sense, demandbase, sales navigator, outplay, mixmax, yesware]
+  enablement_and_coaching: [second nature, mindtickle, highspot, seismic, showpad]
+
+buying_signals:   # customer behaviour that shows real intent
+  - send me a proposal
+  - send over a proposal
+  - send me pricing
+  - send the pricing
+  - what does pricing look like
+  - what's the pricing
+  - how much does it cost
+  - what would it cost
+  - what would this cost
+  - can we get a quote
+  - can you send a quote
+  - do you offer a trial
+  - free trial
+  - pilot
+  - proof of concept
+  - poc
+  - can we try it
+  - can we test
+  - can we see a demo
+  - book a demo
+  - set up a demo
+  - can you demo
+  - loop in my team
+  - bring in my team
+  - bring my cfo
+  - introduce you to
+  - who else uses
+  - case studies
+  - customer references
+  - reference customers
+  - talk to a customer
+  - how long does implementation take
+  - implementation timeline
+  - onboarding process
+  - how does onboarding work
+  - what does implementation look like
+  - security questionnaire
+  - contract terms
+  - msa
+  - redlines
+  - order form
+  - ready to sign
+  - how do we get started
+  - what are the next steps
+  - what's the next step
+  - when can we start
+  - how soon can you start
+
+stall_signals:    # customer behaviour that usually means the deal is drifting
+  - send me an email
+  - just send me info
+  - send me some information
+  - send me an overview
+  - i'll get back to you
+  - i will get back to you
+  - let me think about it
+  - we'll think about it
+  - need to think
+  - we'll be in touch
+  - call me next quarter
+  - call me back
+  - circle back later
+  - not a good time
+  - busy right now
+  - bad timing
+  - evaluating other vendors
+  - evaluating other options
+  - looking at other vendors
+  - comparing vendors
+  - shopping around
+  - talking to your competitors
+  - going with another vendor
+  - chose another
+  - already signed with
+  - we signed with
+  - we'll stick with
+  - sticking with
+
+objections:       # grouped so a rep can see WHICH kind of resistance came up
+  price:
+    - too expensive
+    - too pricey
+    - pricey
+    - expensive
+    - costly
+    - high price
+    - over budget
+    - can't justify
+    - hard to justify
+    - can you do better on price
+    - discount
+    - cheaper
+    - lower price
+    - price is high
+    - price point
+    - sticker shock
+  timing:
+    - not the right time
+    - too busy
+    - no bandwidth
+    - don't have bandwidth
+    - no capacity
+    - resource constraints
+    - other priorities
+    - competing priorities
+    - reorg
+    - restructuring
+  trust_and_security:
+    - security review
+    - security concerns
+    - compliance
+    - gdpr
+    - soc 2
+    - soc2
+    - data privacy
+    - data residency
+    - hipaa
+    - infosec
+    - penetration test
+    - vendor risk
+    - vendor assessment
+    - are you funded
+    - how long have you been around
+    - small company
+    - startup risk
+  status_quo:
+    - we already use
+    - already using
+    - we already have
+    - we've got a tool
+    - we have a tool for that
+    - built it in house
+    - built in-house
+    - homegrown
+    - our current process works
+    - spreadsheets work
+    - change management
+    - hard to switch
+    - switching cost*
+    - locked in
+    - locked into
+    - contract until
+  integration:
+    - integrate with
+    - integration with
+    - does it integrate
+    - works with our crm
+    - salesforce integration
+    - hubspot integration
+    - api access
+    - sso
+    - single sign on
+    - data migration
+    - migrate our data
+    - technical fit
+    - technical requirements
+    - it team
+    - engineering resources
+  value:
+    - don't see the value
+    - not sure we need
+    - not sure it's worth
+    - roi
+    - what's the roi
+    - prove the roi
+    - not convinced
+    - don't see the benefit
+    - why would we switch
+    - how are you different
+    - differentiator
+    - what makes you different
+  adoption:
+    - team won't use
+    - reps won't adopt
+    - adoption
+    - training time
+    - learning curve
+    - change fatigue
+
+stakeholder_titles:   # roles the customer mentions = how many people are in the deal
+  - ceo
+  - cfo
+  - cto
+  - coo
+  - cmo
+  - cro
+  - chief
+  - vp
+  - vice president
+  - svp
+  - evp
+  - director
+  - head of
+  - manager
+  - founder
+  - owner
+  - procurement
+  - legal
+  - it team
+  - security team
+  - finance
+  - revops
+  - rev ops
+  - sales ops
+  - board

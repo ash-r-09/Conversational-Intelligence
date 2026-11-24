@@ -1,0 +1,7 @@
+Rohan (Seller): Thanks for joining. What is driving this evaluation?
+Meera (Customer): Our reps are wasting time on manual call notes, and honestly we are losing deals because nobody can see why.
+Rohan (Seller): Who signs off on a purchase like this?
+Meera (Customer): I'm head of sales, and I'll bring this to our CFO. The budget has been sanctioned, around 40 lakh for this year.
+Rohan (Seller): When would you want to go live?
+Meera (Customer): Our renewal is coming up, we must be live before our board meeting in March.
+Meera (Customer): Can you send me a proposal and share some case studies? Also does it integrate with our CRM?

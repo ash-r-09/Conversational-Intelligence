@@ -18,5 +18,6 @@ One turn per line: `Name (Seller): text` or `Name (Customer): text`. Optional `[
 
 ## Rules
 - Only customer turns count as evidence. The seller's pitch never earns points.
-- Tune behaviour by editing `config/bant.yaml`, then rerun `.venv/bin/pytest -q`.
+- Add or change words in `config/lexicon.yaml` (plain phrases). Run `.venv/bin/python -m bant_agent lexicon` to check for conflicts, then `.venv/bin/pytest -q`. Weights and thresholds live in `config/bant.yaml`.
+- The report shows `matched` (the phrase that triggered each level), momentum, objections by type and stakeholders mentioned; include them.
 - Never invent evidence. If a dimension has none, say "none found".
