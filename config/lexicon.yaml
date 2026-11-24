@@ -1,4 +1,4 @@
-# BANT-AGENT word directory. Plain phrases, no regex needed.
+# Conversational-Intelligence word directory. Plain phrases, no regex needed.
 #
 # How phrases are matched (case-insensitive):
 #   - whole words only; "budget" does not match "budgeting" unless you write budget*

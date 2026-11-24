@@ -1,4 +1,4 @@
-<h1 align="center">BANT-AGENT</h1>
+<h1 align="center">Conversational-Intelligence</h1>
 <p align="center">Sales conversation intelligence and BANT scoring from call transcripts.<br>Rule-based, explainable, no API key.</p>
 
 ---
@@ -20,7 +20,7 @@ Give it call transcripts. For each call it returns:
 ## Quick start
 
 ```bash
-git clone https://github.com/ash-r-09/BANT-AGENT.git && cd BANT-AGENT
+git clone https://github.com/ash-r-09/Conversational-Intelligence.git && cd Conversational-Intelligence
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python -m bant_agent score samples                # ranked table
 .venv/bin/python -m bant_agent score samples/hot-deal.txt   # full report for one call

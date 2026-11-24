@@ -5,7 +5,7 @@ description: Score sales call transcripts on BANT (Budget, Authority, Need, Time
 
 # Score calls on BANT
 
-Repo: `~/Projects/BANT-AGENT` (override with `$BANT_AGENT_DIR`). Run from the repo dir with `.venv/bin/python`.
+Repo: `~/Projects/Conversational-Intelligence` (override with `$BANT_AGENT_DIR`). Run from the repo dir with `.venv/bin/python`.
 
 ## Transcript format
 One turn per line: `Name (Seller): text` or `Name (Customer): text`. Optional `[00:12]` timestamp prefix. If speakers are not labelled, pass `--seller "Alex,Sam"` and/or `--customer "Priya"`.
